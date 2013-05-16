@@ -40,7 +40,8 @@ public class Ad {
     private ArrayList<String> keywords;
     private HashMap<Integer, Integer> similarityVector;
     //Postclassification data
-    private int parentID;
+    private int clusterNo;
+    private int predictedClusterNo;
 
     public int getID() {
         return ID;
@@ -186,12 +187,20 @@ public class Ad {
         this.similarityVector = similarityVector;
     }
 
-    public int getParentID() {
-        return parentID;
+    public int getClusterNo() {
+        return clusterNo;
     }
 
-    public void setParentID(int parentID) {
-        this.parentID = parentID;
+    public void setClusterNo(int clusterNo) {
+        this.clusterNo = clusterNo;
+    }
+    
+    public int getPredictedClusterNo() {
+        return predictedClusterNo;
+    }
+
+    public void setPredictedClusterNo(int predictedClusterNo) {
+        this.predictedClusterNo = predictedClusterNo;
     }
     
     
@@ -214,7 +223,11 @@ public class Ad {
                 + "district : " + district + Constants.NEWLINE
                 + "street : " + street + Constants.NEWLINE
                 + "rooms : " + bedroomsNo + Constants.NEWLINE
+                + "bathrooms : " + bathroomsNo + Constants.NEWLINE
                 + "floor : " + floor + Constants.NEWLINE
+                + "floors in building : " + floorsInBuilding + Constants.NEWLINE
+                + "construction year : " + constructionYear + Constants.NEWLINE
+                + "description : " + description + Constants.NEWLINE
                 + "link : " + link + Constants.NEWLINE;
         
         return out;

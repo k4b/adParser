@@ -10,11 +10,13 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,58 +29,106 @@ import org.jsoup.select.Elements;
 public class Parser {
     
     private ArrayList<Ad> ads;
+    private int counter = 0;
+    private boolean isRunning = true;
     
     public Parser() {
         ads = new ArrayList<>();
     }
     
-    public void parse(String url, String tag) {
+    public void startParsing(String url, String tag, int counterMax) {
+        
+        
+        while(isRunning) {
+            parse(url,tag);
+            url = getNextUrl(url);
+            if(url.isEmpty())
+                isRunning = false;
+            isRunning(counterMax);
+        }
+        System.out.println(adsTitlesToString(ads));
+    }
+    
+    private void parse(String url, String tag) {
+        counter++;
         Document doc = getPage(url);
         if(doc == null) {
-            System.out.println("doc == null");
+            System.out.println(counter + " no site");
             return;
         }
-        Element e = getElement(doc, tag);
-        ArrayList<Ad> ads = createObjects(e);
-        System.out.println(ads.size());
-        System.out.println(arrayListToString(ads));
-        System.out.println("koniec");
+        Element e = getElementByTag(doc, tag);
+        if(e == null) {
+            System.out.println(counter + " no <" + tag + "> tags in source of URL " + url);
+            return;
+        }
+        createObjects(e, ads);
+        System.out.println(counter + " " + ads.size());
     }
     
     public Document getPage(String url) {
+        if(url.equals(""))
+            return null;
+        
         Document d = null;
         try {
-            d = Jsoup.connect(url).get();
-        } catch (IOException ex) {
+            Connection conn = Jsoup.connect(url);
+            d = conn.get();
+        } catch (Exception ex) {
             Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                System.out.println("waiting 3s...");
+                Thread.sleep(3000);
+            } catch (InterruptedException ex1) {
+                try {
+                    d = Jsoup.connect(url).get();
+                } catch (IOException ex2) {
+                    Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex2);
+                }
+            }
+            
         }
         return d;
     }
     
-    public Element getElement(Document doc, String tag) {
-        Element element = doc.getElementsByTag(tag).get(0);
-        return element;
+    public Element getElementByTag(Document doc, String tag) {
+        Elements all = doc.select(tag);
+//        Elements all = doc.getElementsByTag(tag);
+        if(all.size() == 0)
+            return null;
+        else
+            return all.first();
     }
     
-    public ArrayList createObjects( Element element) {
-        ArrayList ads = new ArrayList();
+    public Element getElementByClass(Document doc, String classname) {
+        Elements all = doc.getElementsByClass(classname);
+        return all.first();
+    }
+    
+    public void createObjects( Element element, ArrayList ads) {
         StringTokenizer st;
         
         if(element == null)
-            return ads;
+            return ;
         
         Elements children = element.children();
         if(children == null)
-            return ads;
+            return ;
         
         for(Element child : children) {
-            if(child.className().equals("property oddRow highlight") || child.className().equals("property  highlight")) {
+            if(child.className().trim().contains("property")) {
                 Ad a = new Ad();
                 //get location
-                String location = child.getElementsByClass("cell_location").first().getElementsByTag("a").first().text();
-                st = new StringTokenizer(location, ",");
-                a.setCity(st.nextToken().trim());
-                a.setDistrict(st.nextToken().trim());
+                Element e1 = child.getElementsByClass("cell_location").first();
+                Element e2 = null;
+                if(e1!=null && e1.childNodeSize() > 0)
+                    e2 = e1.getElementsByTag("a").first();
+                String location = ",";
+                if(e2 != null && e2.hasText()) {
+                    location = e2.text();
+                    st = new StringTokenizer(location, ",");
+                    a.setCity(st.nextToken().trim());
+                    a.setDistrict(st.nextToken().trim());
+                }
                 
                 //get last update
                 String dateString = child.getElementsByClass("cell_location").first().getElementsByTag("p").first().text();
@@ -89,12 +139,17 @@ public class Parser {
                     st.nextToken();
                     dateString = st.nextToken();
                 }
+                dateString.trim();
                 DateFormat formatter = new SimpleDateFormat("DD-MM-YYYY");
                 Date date = null;
-                try {
-                    date = formatter.parse(dateString);
-                } catch (ParseException ex) {
-                    Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+                if(dateString.equals("dziś")) {
+                    date = new Date();
+                } else {
+                    try {
+                        date = formatter.parse(dateString);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 a.setLastUpdate(date);
                 
@@ -124,6 +179,9 @@ public class Parser {
                 ar = number.doubleValue();
                 a.setArea(ar);
                 
+                //get title
+                a.setTitle(a.getCity() + ", " + a.getDistrict() + ", " + a.getStreet() + ", " + a.getArea());
+                
                 //get floor
                 String floor = child.getElementsByClass("cell_floor").first().text();
                 floor.trim();
@@ -131,7 +189,9 @@ public class Parser {
                     floor = "0";
                 }
                 int f = -1;
-                f = Integer.parseInt(floor);
+                if(isNumeric(floor)) {
+                    f = Integer.parseInt(floor);
+                }
                 a.setFloor(f);
                 
                 //get price
@@ -152,16 +212,68 @@ public class Parser {
                 }
                 
                 //get link
-                String link = child.getElementsByClass("cell_location").first().getElementsByTag("a").first().attr("href");
-                link.trim();
-                a.setLink(link);
+                String link = null;
+                if(a.getCity() != null || a.getDistrict() != null)
+                    link = child.getElementsByClass("cell_location").first().getElementsByTag("a").first().attr("href");
+                if(link != null) {
+                    link.trim();
+                    a.setLink(link);
+                    parseDetails(link, a);
+                }
                 
                 ads.add(a);
             }
         }
-        return ads;
     }
     
+    public void parseDetails(String url, Ad a) {
+        Document doc = getPage(url);
+        if(doc == null) {
+            System.out.println("no details");
+            return;
+        }
+        
+        //TO-DO make it work
+//        Elements params = doc.select(".propertyLeft");
+//        Elements dts = getElementByClass(doc, "param").child(0).children();
+//        if(dts.size() != 0) {
+//            for(int i = 0; i<dts.size(); i+=2) {
+//                String dt = dts.get(i).text();
+//                if(dt.equals("Liczba pięter:")) {
+//                    int f = Integer.parseInt(dts.get(i+1).text());
+//                    a.setFloorsInBuilding(f);
+//                } else if(dt.equals("Liczba łazienek:")) {
+//                    int b = Integer.parseInt(dts.get(i+1).text());
+//                    a.setBathroomsNo(b);
+//                } else if(dt.equals("Rok budowy:")) {
+//                    int c = Integer.parseInt(dts.get(i+1).text());
+//                    a.setConstructionYear(c);
+//                } 
+//            }
+//        }
+        
+        Element desc = doc.select("#description").first();
+        String description = desc.text();
+        if(description != null) {
+            a.setDescription(description);
+        }
+    }
+   
+    public String getNextUrl(String url) {
+        String output = "";
+        
+        Document doc = getPage(url);
+        if(doc == null) {
+            return "";
+        }
+        
+        Element element = doc.select(".navigateNext").select("a").first();
+        if(element != null) {
+            output += "http://www.oferty.net";
+            output += element.attr("href");
+        }
+        return output;
+    }
     public String arrayListToString(ArrayList ar) {
         String s = "";
         for(Object o : ar) {
@@ -169,5 +281,29 @@ public class Parser {
             s +=Constants.LINE + Constants.NEWLINE;
         }
         return s;
+    }
+    
+    public String adsTitlesToString(ArrayList<Ad> ar) {
+        String s = "";
+        int i = 0;
+        for(Ad a : ar) {
+            i++;
+            s += i + "| " + a.getTitle();
+            s += Constants.NEWLINE;
+        }
+        return s;
+    }
+    
+    public static boolean isNumeric(String str)
+    {
+      return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
+    }
+    
+    public void isRunning(int counterMax) {
+        if(counter < counterMax) {
+            isRunning = true;
+        } else {
+            isRunning = false;
+        }
     }
 }

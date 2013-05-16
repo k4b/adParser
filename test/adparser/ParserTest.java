@@ -50,10 +50,10 @@ public class ParserTest {
                 + "area_from%5D=30&ps%5Bliving_area_to%5D=60&ps%5Bprice_from%5D=100&ps%5Bprice_to%5D=300000";
         String tag = "tbody";
         Parser instance = new Parser();
-        instance.parse(url, tag);
+        instance.startParsing(url, tag, 5);
     }
     
-    @Test
+//    @Test
     public void testParseCreatingObjects() {
         System.out.println("testParseCreatingObjects");
         String url = "http://www.oferty.net/mieszkania/szukaj?ps%5Blocation%5D%5Btype%5D=1&ps%5Btype%5D=1&ps%5Btransaction%5D=1&ps%5Blocation%5D%5Btext%5D=Warszawa&ps%5Bliving_"
@@ -66,12 +66,32 @@ public class ParserTest {
             System.out.println("doc == null");
             return;
         }
-        Element e = p.getElement(doc, tag);
-        ArrayList ads = p.createObjects(e);
+        Element e = p.getElementByTag(doc, tag);
+        ArrayList ads  = new ArrayList<>();
+        p.createObjects(e, ads);
         if(ads.size()>0)
             assertTrue(true);
         else
             fail();
         ads.get(0).toString();
+    }
+    
+    @Test
+    public void testParseDetails() {
+        System.out.println("testParseDetails");
+        String url = "http://www.oferty.net/mieszkanie-na-sprzedaz-broniewskiego-warszawa-bielany,922442274";
+        String classname = "param";
+        
+        Parser p = new Parser();
+        Ad a = new Ad();
+        
+        p.parseDetails(url, a);
+        
+        
+        assertFalse(a.getDescription().equals(""));
+//        assertTrue(a.getBathroomsNo()!=0);
+//        assertTrue(a.getConstructionYear()!=0);
+//        assertTrue(a.getFloorsInBuilding()!=0);
+        
     }
 }
