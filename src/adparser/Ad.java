@@ -37,8 +37,8 @@ public class Ad {
     private int floorsInBuilding;
     private String link;
     //Prepared data
-    private ArrayList<String> keywords;
-    private HashMap<Integer, Integer> similarityVector;
+    private KeyWords keywords;
+    private SimilarityVector similarityVector;
     //Postclassification data
     private int clusterNo;
     private int predictedClusterNo;
@@ -171,19 +171,19 @@ public class Ad {
         this.link = link;
     }
 
-    public ArrayList<String> getKeywords() {
+    public KeyWords getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(ArrayList<String> keywords) {
+    public void setKeywords(KeyWords keywords) {
         this.keywords = keywords;
     }
 
-    public HashMap<Integer, Integer> getSimilarityVector() {
+    public SimilarityVector getSimilarityVector() {
         return similarityVector;
     }
 
-    public void setSimilarityVector(HashMap<Integer, Integer> similarityVector) {
+    public void setSimilarityVector(SimilarityVector similarityVector) {
         this.similarityVector = similarityVector;
     }
 
@@ -207,8 +207,8 @@ public class Ad {
     public Ad() {
         Ad.adsCount++;
         this.ID = Ad.adsCount;
-        keywords = new ArrayList<>();
-        similarityVector = new HashMap<>();
+        keywords = new KeyWords();
+        similarityVector = new SimilarityVector();
     }
     
     @Override
