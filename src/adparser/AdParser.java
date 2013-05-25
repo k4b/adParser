@@ -4,6 +4,11 @@
  */
 package adparser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 /**
  *
  * @author Karol
@@ -14,13 +19,29 @@ public class AdParser {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String url = "http://www.oferty.net/mieszkania/szukaj?ps%5Blocation%5D%5Btype%5D=1&ps%5Btype%5D=1&ps%5Btransaction%5D=1&ps%5Blocation%5D%5Btext%5D=Warszawa&ps%5Bliving_area_from%5D=30&ps%5Bliving_area_to%5D=60&ps%5Bprice_from%5D=100&ps%5Bprice_to%5D=300000";
+        if(args.length > 0)
+            System.out.println("site: " + args[0]);
         
-        String url2 = "http://www.oferty.net/mieszkania/szukaj?ps%5Btype%5D=1&ps%5Blocation%5D%5Btype%5D=1&ps%5Blocation%5D%5Btext_queue%5D%5B%5D=Warszawa&ps%5Btransaction%5D=1&ps%5Bprice_from%5D=10000&ps%5Bprice_to%5D=155000&ps%5Bdate_filter%5D=0&ps%5Bsort_order%5D=rank_asc";
+        String url = "http://www.oferty.net/mieszkania/szukaj?ps%5Btype%5D=1&ps%5Blocation%5D%5Btype%5D=1&ps%5Blocation%5D%5Btext_queue%5D%5B%5D=Warszawa&ps%5Btransaction%5D=1&ps%5Bprice_from%5D=10000&ps%5Bprice_to%5D=130000&ps%5Bdate_filter%5D=0&ps%5Bsort_order%5D=rank_asc";
         String tag = "tbody";
-        String detailsURL = "http://www.oferty.net/mieszkanie-na-sprzedaz-broniewskiego-warszawa-bielany,922442274";
         
         Parser parser = new Parser();
-        parser.startParsing(url2, tag, 1);
+        Preparator preparator = new Preparator();
+        parser.startParsing(url, tag, 100);
+        ArrayList<Ad> ads = parser.getAds();
+        for(Ad ad : ads) {
+            preparator.prepareKeywords(ad);
+        }
+        for(Ad ad : ads) {
+            preparator.prepareSimilarityVector(ad);
+        }
+        System.out.println(parser.adsTitlesToString(ads));
+        
+        //save to DB
+        DateFormat dateFormat = new SimpleDateFormat("ddMMyyyy_HHmm");
+        Calendar cal = Calendar.getInstance();
+        String time = dateFormat.format(cal.getTime());
+        String dbName = "ads_" + time;
+        Utils.saveToDB(dbName, ads, preparator.getWordbank());
     }
 }

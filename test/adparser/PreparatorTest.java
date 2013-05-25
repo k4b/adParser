@@ -47,14 +47,14 @@ public class PreparatorTest {
     }
 
     /**
-     * Test of prepareForClassifier method, of class Preparator.
+     * Test of prepareKeywords method, of class Preparator.
      */
 //    @Test
     public void testPrepareForClassifier() {
         System.out.println("prepareForClassifier");
         Ad ad = null;
         Preparator instance = new Preparator();
-        instance.prepareForClassifier(ad);
+        instance.prepareKeywords(ad);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

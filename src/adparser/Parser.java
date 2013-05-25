@@ -10,7 +10,6 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.StringTokenizer;
@@ -32,21 +31,28 @@ public class Parser {
     private int counter = 0;
     private boolean isRunning = true;
     
+    public ArrayList<Ad> getAds() {
+        return ads;
+    }
+    
     public Parser() {
         ads = new ArrayList<>();
     }
     
+    /**
+     * 
+     * @param url URL to first page of search results
+     * @param tag Table element containing search results
+     * @param counterMax Maximum number of analyzed pages 
+     */
     public void startParsing(String url, String tag, int counterMax) {
-        
-        
         while(isRunning) {
             parse(url,tag);
             url = getNextUrl(url);
+            isRunning(counterMax);
             if(url.isEmpty())
                 isRunning = false;
-            isRunning(counterMax);
         }
-        System.out.println(adsTitlesToString(ads));
     }
     
     private void parse(String url, String tag) {
@@ -232,26 +238,6 @@ public class Parser {
             System.out.println("no details");
             return;
         }
-        
-        //TO-DO make it work
-//        Elements params = doc.select(".propertyLeft");
-//        Elements dts = getElementByClass(doc, "param").child(0).children();
-//        if(dts.size() != 0) {
-//            for(int i = 0; i<dts.size(); i+=2) {
-//                String dt = dts.get(i).text();
-//                if(dt.equals("Liczba pięter:")) {
-//                    int f = Integer.parseInt(dts.get(i+1).text());
-//                    a.setFloorsInBuilding(f);
-//                } else if(dt.equals("Liczba łazienek:")) {
-//                    int b = Integer.parseInt(dts.get(i+1).text());
-//                    a.setBathroomsNo(b);
-//                } else if(dt.equals("Rok budowy:")) {
-//                    int c = Integer.parseInt(dts.get(i+1).text());
-//                    a.setConstructionYear(c);
-//                } 
-//            }
-//        }
-        
         Element desc = doc.select("#description").first();
         String description = desc.text();
         if(description != null) {
@@ -274,6 +260,7 @@ public class Parser {
         }
         return output;
     }
+    
     public String arrayListToString(ArrayList ar) {
         String s = "";
         for(Object o : ar) {
@@ -285,11 +272,11 @@ public class Parser {
     
     public String adsTitlesToString(ArrayList<Ad> ar) {
         String s = "";
-        int i = 0;
         for(Ad a : ar) {
-            i++;
-            s += i + "| " + a.getTitle();
-            s += Constants.NEWLINE;
+            s += a.getID() + "| " + a.getTitle() + Constants.NEWLINE;
+            s += a.keywordsToString() + Constants.NEWLINE;
+            s += a.similarityVectorToString() + Constants.NEWLINE;
+            s += Constants.LINE + Constants.NEWLINE;
         }
         return s;
     }

@@ -4,7 +4,10 @@
  */
 package adparser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -55,5 +58,16 @@ public class Utils {
         list.clear();
         list.addAll(noDuplicates);
         return list;
+    }
+    
+    public static void saveToDB(String dbName, ArrayList<Ad> ads, WordBank wordbank) {
+        System.out.println("Writing to DB: " + dbName);
+        CouchDBHelper dbHelper = new CouchDBHelper(dbName);
+        for(Ad a : ads) {
+            dbHelper.save(a);
+        }
+        String wordbankDBName = dbName + "_wordbank";
+        CouchDBHelper dbhelperWB = new CouchDBHelper(wordbankDBName);
+        dbhelperWB.save(wordbank);
     }
 }

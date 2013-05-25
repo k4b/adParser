@@ -232,4 +232,12 @@ public class Ad {
         
         return out;
     }
+    
+    public String keywordsToString() {
+        return keywords.toString();
+    }
+    
+    public String similarityVectorToString() {
+        return similarityVector.toString();
+    }
 }

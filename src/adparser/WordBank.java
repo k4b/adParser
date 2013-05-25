@@ -15,6 +15,8 @@ import java.util.Set;
  */
 public class WordBank extends HashMap<String, WordParams>{
     
+    String name = "WordBank";
+    
     public WordBank() {
         super();
     }

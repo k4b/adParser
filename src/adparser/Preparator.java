@@ -63,13 +63,15 @@ public class Preparator {
         reader.close();
     }
     
-    public void prepareForClassifier(Ad ad) {
+    public void prepareKeywords(Ad ad) {
         //make keywors
         KeyWords stems = getKeywords(ad.getDescription());
         ad.setKeywords(stems);
         //add stems to workbank
         addKeywordsToWordBank(new ArrayList<>(stems.keySet()));
-        //make similarity vector
+    }
+    
+    public void prepareSimilarityVector(Ad ad) {
         SimilarityVector v = makeSimilarityVector(ad);
         ad.setSimilarityVector(v);
     }
