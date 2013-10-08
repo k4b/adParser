@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package adparser;
+package test.adparser;
 
 import java.util.ArrayList;
 import org.jsoup.Jsoup;
@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import main.java.adparser.*;
 
 /**
  *

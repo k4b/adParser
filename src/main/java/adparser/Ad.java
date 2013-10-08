@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package adparser;
+package main.java.adparser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,7 +58,7 @@ public class Ad {
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     public String getDescription() {
         return description;
     }
