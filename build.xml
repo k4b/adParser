@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="adParser" default="dist">
 	<defaultexcludes add="**/CVS"/>
+	<property name="program.name" value="adparser"/>
+  	<property name="program.package" value="adparser"/>
+  	<property name="program.title" value="AdParser"/>
+  	<property name="program.version" value="1.0"/>
+	<property name="source.dir" value="src/main/java"/>
 	<property name="build.dir" value="build"/>
 	<property name="build.ver" value="1.0.0-ALPHA"/>
 	<property name="dist.dir" value="dist"/>
@@ -10,7 +15,12 @@
 	<property name="srczip" value="${dist.dir}/adParser-src-${build.ver}.zip"/>
 	<property name="srctgz" value="${dist.dir}/adParser-src-${build.ver}.tgz"/>
 
-	<target name="init">
+	<!-- Construct compile classpath -->
+	  <path id="compile.classpath">
+	    <pathelement location="${build.dir}/main/java"/>
+	  </path>
+
+	<target name="init" depends="clean">
 		<tstamp/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${dist.dir}"/>
@@ -26,7 +36,7 @@
 			sourcepath=""
 			source="1.7"
 			target="1.7"
-			srcdir="src"
+			srcdir="${source.dir}"
 			debug="on"
 			destdir="${build.dir}">
 			<classpath>
@@ -38,14 +48,58 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile">
-		<jar basedir="${build.dir}"
-			jarfile="${jarfile}">
+	<target name="javadoc" depends="compile" description="Create program Javadoc documentation">
+	    <mkdir dir="${build.dir}/apidocs"/>
+	    <tstamp>
+	        <format property="current.year" pattern="yyyy"/>
+	    </tstamp>
+	    <javadoc sourcepath="${source.dir}"
+	                destdir="${build.dir}/apidocs"
+	           packagenames="adparser.*"
+	                 author="true"
+	                private="true"
+	                version="true"
+	               doctitle="&lt;h1&gt;${component.title} ${component.version}&lt;/h1&gt;"
+	            windowtitle="${component.title} ${component.version}"
+	                 bottom="Copyright Karol Abramczyk">
+	           <!--
+	           classpathref="compile.classpath"> 
+	       	-->
+	           <classpath>
+	      				<fileset dir="lib">
+	        				<include name="*.jar"/>
+	      				</fileset>
+				</classpath>
+	        <link href="http://java.sun.com/javaee/5/docs/api/"/>
+	        <link href="http://download.oracle.com/javase/1.5.0/docs/api/index.html"/>
+	    </javadoc>
+	  </target>
+
+	<target name="jar" depends="compile, javadoc">
+		<copy todir="${build.dir}">
+			<fileset dir=".">
+				<include name="*stopwords*"/>
+			</fileset>
+		</copy>
+		<!-- Binary files and documentation JAR -->
+		<jar basedir="${build.dir}" jarfile="${jarfile}" excludes="*.jar">
 			<manifest>
 				<attribute name="Main-Class" value="adparser.AdParser"/>
 				<attribute name="Classpath" value="./*"/>
 			</manifest>
 		</jar>
+
+		<!-- Souces JAR -->
+		<mkdir dir="${build.dir}/sources/src"/>
+		<copy todir="${build.dir}/sources/src">
+		    <fileset dir="src"/>
+		    <fileset dir=".">
+				<include name="*stopwords*"/>
+			</fileset>
+		</copy>
+		<jar basedir="${build.dir}/sources" jarfile="${build.dir}/AdParser-source-${build.ver}" excludes="*.jar">
+		</jar>
+		<delete dir="${build.dir}/sources" />
 	</target>
 
 	<target name="dist" depends="clean,jar">
@@ -78,4 +132,12 @@
 			</tarfileset>
 		</tar>
 	</target>
+
+	<target name="run" depends="">
+        <!--
+        <java jar="${jarfile}" classname="adparser.AdParser" fork="true"/>
+    	-->
+    	<java dir="${build.dir}" classpath="./*" classname="adparser.AdParser" fork="true"/>
+    </target>
+
 </project>

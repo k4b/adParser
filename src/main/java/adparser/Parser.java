@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -22,8 +22,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- *
- * @author Karol
+ * Extracts ad data from downloaded webpage. Uses Jsoup library.
+ * @author Karol Abramczyk
  */
 public class Parser {
     
@@ -40,7 +40,7 @@ public class Parser {
     }
     
     /**
-     * 
+     * Parses ad search results. Starts with first page of advertising website results and then continues to <i>counterMax</i>-th page of results. 
      * @param url URL to first page of search results
      * @param tag Table element containing search results
      * @param counterMax Maximum number of analyzed pages 
@@ -55,6 +55,11 @@ public class Parser {
         }
     }
     
+    /**
+     * Parses one page of ad serching results
+     * @param url URL of results webpage
+     * @param tag Tag conteaining multiple ads
+     */
     private void parse(String url, String tag) {
         counter++;
         Document doc = getPage(url);
@@ -71,6 +76,11 @@ public class Parser {
         System.out.println(counter + " " + ads.size());
     }
     
+    /**
+     * Downloads webpage and returns it as Jsoup Document
+     * @param url URL to webpage
+     * @return Jsoup webpage Document object
+     */
     public Document getPage(String url) {
         if(url.equals(""))
             return null;
@@ -96,6 +106,12 @@ public class Parser {
         return d;
     }
     
+    /**
+     * Returns first element of specified Tag within Document
+     * @param doc Document for tag extraction
+     * @param tag Searched tag
+     * @return First element of specified tag
+     */
     public Element getElementByTag(Document doc, String tag) {
         Elements all = doc.select(tag);
 //        Elements all = doc.getElementsByTag(tag);

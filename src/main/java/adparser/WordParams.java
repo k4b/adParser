@@ -2,15 +2,22 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 /**
- *
+ * Object containing parameters of word in wordbank.
  * @author Karol
  */
 public class WordParams {
     
+	/**
+	 * Word ID
+	 */
     private int ID;
+    
+    /**
+     * word document frequency
+     */
     private int numDocs;
     
     public WordParams(int ID, int numDocs) {

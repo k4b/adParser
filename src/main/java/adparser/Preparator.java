@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -25,8 +25,8 @@ import morfologik.stemming.PolishStemmer;
 import morfologik.stemming.WordData;
 
 /**
- *
- * @author Karol
+ * Prepares extracted ad data for classification. Extracts keywords, coints tf/idf, creates similarity vector.
+ * @author Karol Abramczyk
  */
 public class Preparator {
     private ArrayList<String> stopwords;

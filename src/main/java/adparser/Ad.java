@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 /**
- *
- * @author Karol
+ * Instance of ad. All fields are optional.
+ * @author Karol Abramczyk
  */
 public class Ad {
     /**
@@ -18,39 +18,126 @@ public class Ad {
      */
     public static int adsCount = 0;
     
+    /**
+     * Ad unique ID
+     */
     private int ID;
+    
+    /**
+     * Ad title
+     */
     private String title;
+    
+    /**
+     * Ad description
+     */
     private String description;
+    
+    /**
+     * City, where advertised property is located.
+     */
     private String city;
+    
+    /**
+     * District of city, where advertised property is located.
+     */
     private String district;
+    
+    /**
+     * Street, where advertised property is located.
+     */
     private String street;
-    //Numbers
+    
+    /**
+     * Price of the advertised property
+     */
     private int price;
+    
+    /**
+     * Price per meter of advertised property
+     */
     private int pricePerMeter;
+    
+    /**
+     * Number of bedrooms
+     */
     private int bedroomsNo;
+    
+    /**
+     * Number of bathrooms
+     */
     private int bathroomsNo;
+    
+    /**
+     * Number of floor in the building
+     */
     private int floor;
+    
+    /**
+     * Area of the advertised property in square meters
+     */
     private double area;
-    //Details
+    
+    /**
+     * Time of ad last update
+     */
     private Date lastUpdate;
+    
+    /**
+     * Year of building construction
+     */
     private int constructionYear;
+    
+    /**
+     * Number of floors in the building
+     */
     private int floorsInBuilding;
+    
+    /**
+     * Direct link to this advertisement
+     */
     private String link;
-    //Prepared data
+    
+    /**
+     * Map of keywords and their parameters extracted from the ad
+     */
     private KeyWords keywords;
+    
+    /**
+     * Similarity vector of this ad.
+     */
     private SimilarityVector similarityVector;
-    //Postclassification data
+    
+    /**
+     * Number of the cluster this ad was assigned to by classification
+     */
     private int clusterNo;
+    
+    /**
+     * Number of the cluster this ad should obtain by classification (assigned manually)
+     */
     private int predictedClusterNo;
 
+    /**
+     * Returns unique ID of this ad
+     * @return ad ID
+     */
     public int getID() {
         return ID;
     }
-
+    
+    /**
+     * Sets ad ID
+     * @param ID new ID of the ad
+     */
     public void setID(int ID) {
         this.ID = ID;
     }
 
+    /**
+     * Returns ad title
+     * @return ad title
+     */
     public String getTitle() {
         return title;
     }
@@ -203,7 +290,9 @@ public class Ad {
         this.predictedClusterNo = predictedClusterNo;
     }
     
-    
+    /**
+     * Creates Ad, increments number of all ads, and assigns ID to this Ad
+     */
     public Ad() {
         Ad.adsCount++;
         this.ID = Ad.adsCount;
@@ -211,6 +300,9 @@ public class Ad {
         similarityVector = new SimilarityVector();
     }
     
+    /**
+     * Returns parameters of this Ad as a string
+     */
     @Override
     public String toString() {
         String out = "";
@@ -233,10 +325,18 @@ public class Ad {
         return out;
     }
     
+    /**
+     * Returns keywords of this Ad as string
+     * @return Ad keywords as string
+     */
     public String keywordsToString() {
         return keywords.toString();
     }
     
+    /**
+     * Returns similarity vector of this ad as string
+     * @return Ad similarity vector as string
+     */
     public String similarityVectorToString() {
         return similarityVector.toString();
     }

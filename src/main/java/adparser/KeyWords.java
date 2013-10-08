@@ -2,22 +2,28 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 /**
- *
+ * HashMap of keywords and their parameters.
  * @author Karol
  */
 public class KeyWords extends HashMap<String, KeyWordParams>{
     
+	/**
+	 * Creates keywords hashmap
+	 */
     public KeyWords() {
         super();
     }
     
+    /**
+     * Returns keywords hashmap as a string of key - value pairs
+     */
     @Override
     public String toString() {
         String s = "";

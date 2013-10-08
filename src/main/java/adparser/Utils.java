@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,8 +14,8 @@ import java.util.List;
 import morfologik.stemming.WordData;
 
 /**
- *
- * @author Karol
+ * Custom utility functions required in this project
+ * @author Karol Abramczyk
  */
 public class Utils {
     

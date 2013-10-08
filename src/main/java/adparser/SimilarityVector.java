@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
- *
+ * Vector containing pairs of term ID and its tf-idf statistic
  * @author Karol
  */
 public class SimilarityVector extends TreeMap<Integer, Double>{

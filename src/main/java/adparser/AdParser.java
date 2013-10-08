@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- *
+ * Main class of AdParser program. Downloads ds from real estate advertising website, prepares data for indexing and saves it to DB.
  * @author Karol
  */
 public class AdParser {
 
     /**
-     * @param args the command line arguments
+     * Entry point of the program. Downloads ads, extracts keywords, creates similarity vectors and saves data to DB.
+     * @param args The command line arguments. Takes one integer number which is number of viewed pages at the advertising website.
      */
     public static void main(String[] args) {
         if(args.length > 0)

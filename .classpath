@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="build" path="src"/>
-	<classpathentry kind="var" path="JRE_LIB" rootpath="JRE_SRCROOT" sourcepath="JRE_SRC"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
 	<classpathentry kind="con" path="/home/karol/Dev/Projects/adParser/${classpath}"/>
 	<classpathentry kind="lib" path="/home/karol/Dev/Projects/adParser/lib/commons-codec-1.6.jar"/>
 	<classpathentry kind="lib" path="/home/karol/Dev/Projects/adParser/lib/commons-logging-1.1.1.jar"/>

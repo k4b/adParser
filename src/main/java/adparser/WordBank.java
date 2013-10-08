@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.java.adparser;
+package adparser;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
- * @author Karol
+ * Object containing map of terms and their parameters
+ * @author Karol Abramczyk
  */
 public class WordBank extends HashMap<String, WordParams>{
     
@@ -21,16 +21,30 @@ public class WordBank extends HashMap<String, WordParams>{
         super();
     }
     
+    /**
+     * Puts new word to wordbank
+     * @param word Word inserted to wordbank
+     */
     public void addWord(String word) {
         WordParams params = new WordParams(size()+1, 1);
         put(word, params);
     }
     
+    /**
+     * Returns ID of specified word from wordbank
+     * @param word word from wordbank
+     * @return ID of specified word
+     */
     public int getID(String word) {
         WordParams params = get(word);
         return params.getID();
     }
     
+    /**
+     * Returns document frequency of specified word from wordbank
+     * @param word word from wordbank
+     * @return word document frequency
+     */
     public int getNumDocs(String word) {
         WordParams params = get(word);
         return params.getNumDocs();
