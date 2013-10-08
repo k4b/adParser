@@ -9,6 +9,7 @@
 	<property name="build.dir" value="build"/>
 	<property name="build.ver" value="1.0.0-ALPHA"/>
 	<property name="dist.dir" value="dist"/>
+	<property name="lib.dir" value="lib"/>
 	<property name="jarfile" value="${build.dir}/adParser-${build.ver}.jar"/>
 	<property name="jarallfile" value="${build.dir}/adParserAll-${build.ver}.jar"/>
 	<property name="jarminfile" value="${build.dir}/adParserMin-${build.ver}.jar"/>
@@ -16,9 +17,13 @@
 	<property name="srctgz" value="${dist.dir}/adParser-src-${build.ver}.tgz"/>
 
 	<!-- Construct compile classpath -->
-	  <path id="compile.classpath">
-	    <pathelement location="${build.dir}/main/java"/>
-	  </path>
+	<path id="compile.classpath">
+		<pathelement location="${build.dir}/main/java"/>
+	</path>
+
+	<path id="classpath">
+	    <fileset dir="lib" includes="**/*.jar"/>
+	</path>
 
 	<target name="init" depends="clean">
 		<tstamp/>
@@ -32,19 +37,8 @@
 	</target>
 
 	<target name="compile" depends="init">
-		<javac classpath="${classpath}"
-			sourcepath=""
-			source="1.7"
-			target="1.7"
-			srcdir="${source.dir}"
-			debug="on"
-			destdir="${build.dir}">
-			<classpath>
-      			<fileset dir="lib">
-        			<include name="**/*.jar"/>
-      			</fileset>
-			</classpath>
-			<include name="**/*.java" />
+		<javac sourcepath="" source="1.7" target="1.7" srcdir="${source.dir}" debug="on" destdir="${build.dir}">
+			<classpath refid="classpath"/>
 		</javac>
 	</target>
 
@@ -75,34 +69,26 @@
 	    </javadoc>
 	  </target>
 
-	<target name="jar" depends="compile, javadoc">
+	<target name="jar" depends="compile">
 		<copy todir="${build.dir}">
 			<fileset dir=".">
 				<include name="*stopwords*"/>
 			</fileset>
 		</copy>
-		<!-- Binary files and documentation JAR -->
-		<jar basedir="${build.dir}" jarfile="${jarfile}" excludes="*.jar">
-			<manifest>
-				<attribute name="Main-Class" value="adparser.AdParser"/>
-				<attribute name="Classpath" value="./*"/>
-			</manifest>
-		</jar>
-
-		<!-- Souces JAR -->
-		<mkdir dir="${build.dir}/sources/src"/>
-		<copy todir="${build.dir}/sources/src">
-		    <fileset dir="src"/>
-		    <fileset dir=".">
-				<include name="*stopwords*"/>
+		<copy todir="${build.dir}/lib">
+			<fileset dir="lib">
+				<include name="**/*.jar"/>
 			</fileset>
 		</copy>
-		<jar basedir="${build.dir}/sources" jarfile="${build.dir}/AdParser-source-${build.ver}" excludes="*.jar">
+		<jar basedir="${build.dir}" jarfile="${jarfile}" excludes="adParser*.jar,apidocs/">
+			<manifest>
+				<attribute name="Main-Class" value="adparser.AdParser"/>
+				<attribute name="Class-Path" value="lib/jsoup-1.7.2.jar lib/commons-codec-1.6.jar lib/commons-logging-1.1.1.jar lib/google-gson-2.2.4-release.zip lib/gson-2.2.3.jar lib/hamcrest-core-1.3.jar lib/httpclient-4.2.5.jar lib/httpcore-4.2.4.jar lib/junit-4.11.jar lib/lightcouch-0.0.6.jar lib/morfologik-fsa-1.6.0.jar lib/morfologik-polish-1.6.0.jar lib/morfologik-stemming-1.6.0.jar"/>
+			</manifest>
 		</jar>
-		<delete dir="${build.dir}/sources" />
 	</target>
 
-	<target name="dist" depends="clean,jar">
+	<target name="dist" depends="clean,jar, javadoc">
 		<fileset dir=".">
 			<patternset id="distfiles">
 				<exclude name="eclipse/**"/>
@@ -131,13 +117,40 @@
 				<patternset refid="distfiles"/>
 			</tarfileset>
 		</tar>
+
+
+		<!-- Binary files and documentation Zip -->
+		<zip destfile="${dist.dir}/AdParser-binary-${build.ver}.zip" basedir="${build.dir}">
+		</zip>
+
+		<!-- Souces Zip -->
+		<mkdir dir="${dist.dir}/sources/src"/>
+		<copy todir="${dist.dir}/sources/src">
+		    <fileset dir="src"/>
+		</copy>
+		<copy todir="${dist.dir}/sources">
+		    <fileset dir=".">
+				<include name="*stopwords*"/>
+			</fileset>
+		</copy>
+		<zip destfile="${dist.dir}/AdParser-sources-${build.ver}.zip" basedir="${dist.dir}/sources">
+		</zip>
+		<delete dir="${dist.dir}/sources" />
 	</target>
 
-	<target name="run" depends="">
-        <!--
-        <java jar="${jarfile}" classname="adparser.AdParser" fork="true"/>
-    	-->
-    	<java dir="${build.dir}" classpath="./*" classname="adparser.AdParser" fork="true"/>
+	<target name="run" depends="jar">
+    	<java classname="adparser.AdParser">
+         <classpath>
+           <pathelement location="${build.dir}/jsoup-1.7.2.jar"/>
+           <pathelement path="${build.dir}/ "/>
+         </classpath>
+       </java>
+       
+    </target>
+
+    <target name="run-jar" depends="jar">
+    	<java jar="${jarfile}" fork="true" classpathref="classpath">
+       </java>
     </target>
 
 </project>
