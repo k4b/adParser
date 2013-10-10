@@ -2,18 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.adparser;
+package adparser;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import morfologik.stemming.PolishStemmer;
 import morfologik.stemming.WordData;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
-import main.java.adparser.*;
 
 /**
  *
@@ -65,7 +67,7 @@ public class UtilsTest {
      */
     @Test
     public void testGetStems() {
-        System.out.println("getStems");
+        System.out.println(Constants.NEWLINE + "========= getStems =========" + Constants.NEWLINE);
         PolishStemmer stemmer = new PolishStemmer();
         List<WordData> list = stemmer.lookup("poniedziałek");
         System.out.println(Utils.listToString(list));
@@ -81,7 +83,7 @@ public class UtilsTest {
      */
     @Test
     public void testRemoveDuplicates() {
-        System.out.println("removeDuplicates");
+        System.out.println(Constants.NEWLINE + "========= removeDuplicates =========" + Constants.NEWLINE);
         PolishStemmer stemmer = new PolishStemmer();
         List<WordData> list = stemmer.lookup("poniedziałek");
         System.out.println("list:");

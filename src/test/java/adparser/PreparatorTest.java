@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.adparser;
+package adparser;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,7 +15,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import main.java.adparser.*;
 
 
 /**
@@ -79,7 +78,7 @@ public class PreparatorTest {
      */
     @Test
     public void testRemoveStopWords() {
-        System.out.println("removeStopWords");
+        System.out.println(Constants.NEWLINE + "========= removeStopWords =========" + Constants.NEWLINE);
         Preparator instance = new Preparator();
         String text = instance.stopWordsToString();
         System.out.println("text:");
@@ -98,7 +97,7 @@ public class PreparatorTest {
      */
     @Test
     public void testDoStemming() {
-        System.out.println("doStemming");
+        System.out.println(Constants.NEWLINE + "========= doStemming =========" + Constants.NEWLINE);
         String text = "poniedziałek wtorek środa poniedziałek";
         String result;
         Preparator instance = new Preparator();
@@ -114,7 +113,7 @@ public class PreparatorTest {
      */
     @Test
     public void testAddKeywordsToWordBank() {
-        System.out.println("addKeywordsToWordBank");
+        System.out.println(Constants.NEWLINE + "========= addKeywordsToWordBank =========" + Constants.NEWLINE);
         ArrayList<String> keywords = new ArrayList<>();
         keywords.add("jeden");
         keywords.add("dwa");
@@ -138,7 +137,7 @@ public class PreparatorTest {
      */
     @Test
     public void testMakeSimilarityVector() {
-        System.out.println("makeSimilarityVector");
+        System.out.println(Constants.NEWLINE + "========= makeSimilarityVector =========" + Constants.NEWLINE);
         Ad ad = new Ad();
         Preparator instance = new Preparator();
         ad.setDescription("poniedziałek wtorek środa poniedziałek");
@@ -165,7 +164,7 @@ public class PreparatorTest {
     
     @Test
     public void testWordParamsIncreaseNumDocs() {
-        System.out.println("wordParamsIncreaseNumDocs");
+        System.out.println(Constants.NEWLINE + "========= wordParamsIncreaseNumDocs =========" + Constants.NEWLINE);
         WordBank b = new WordBank();
         b.addWord("test");
         assertEquals(1, b.getNumDocs("test"));

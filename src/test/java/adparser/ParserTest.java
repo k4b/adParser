@@ -2,17 +2,18 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.adparser;
+package adparser;
 
 import java.util.ArrayList;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
-import main.java.adparser.*;
 
 /**
  *
@@ -79,7 +80,7 @@ public class ParserTest {
     
     @Test
     public void testParseDetails() {
-        System.out.println("testParseDetails");
+        System.out.println(Constants.NEWLINE + "========= testParseDetails =========" + Constants.NEWLINE);
         String url = "http://www.oferty.net/mieszkanie-na-sprzedaz-broniewskiego-warszawa-bielany,922442274";
         String classname = "param";
         

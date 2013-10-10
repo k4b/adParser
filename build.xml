@@ -56,14 +56,7 @@
 	               doctitle="&lt;h1&gt;${component.title} ${component.version}&lt;/h1&gt;"
 	            windowtitle="${component.title} ${component.version}"
 	                 bottom="Copyright Karol Abramczyk">
-	           <!--
-	           classpathref="compile.classpath"> 
-	       	-->
-	           <classpath>
-	      				<fileset dir="lib">
-	        				<include name="*.jar"/>
-	      				</fileset>
-				</classpath>
+	           <classpath refid="classpath" />
 	        <link href="http://java.sun.com/javaee/5/docs/api/"/>
 	        <link href="http://download.oracle.com/javase/1.5.0/docs/api/index.html"/>
 	    </javadoc>
@@ -83,7 +76,7 @@
 		<jar basedir="${build.dir}" jarfile="${jarfile}" excludes="adParser*.jar,apidocs/">
 			<manifest>
 				<attribute name="Main-Class" value="adparser.AdParser"/>
-				<attribute name="Class-Path" value="lib/jsoup-1.7.2.jar lib/commons-codec-1.6.jar lib/commons-logging-1.1.1.jar lib/google-gson-2.2.4-release.zip lib/gson-2.2.3.jar lib/hamcrest-core-1.3.jar lib/httpclient-4.2.5.jar lib/httpcore-4.2.4.jar lib/junit-4.11.jar lib/lightcouch-0.0.6.jar lib/morfologik-fsa-1.6.0.jar lib/morfologik-polish-1.6.0.jar lib/morfologik-stemming-1.6.0.jar"/>
+				<attribute name="Class-Path" value=". lib/jsoup-1.7.2.jar lib/commons-codec-1.6.jar lib/commons-logging-1.1.1.jar lib/google-gson-2.2.4-release.zip lib/gson-2.2.3.jar lib/hamcrest-core-1.3.jar lib/httpclient-4.2.5.jar lib/httpcore-4.2.4.jar lib/junit-4.11.jar lib/lightcouch-0.0.6.jar lib/morfologik-fsa-1.6.0.jar lib/morfologik-polish-1.6.0.jar lib/morfologik-stemming-1.6.0.jar"/>
 			</manifest>
 		</jar>
 	</target>
@@ -148,7 +141,7 @@
        
     </target>
 
-    <target name="run-jar" depends="jar">
+    <target name="run-from-jar" depends="jar">
     	<java jar="${jarfile}" fork="true" classpathref="classpath">
        </java>
     </target>
