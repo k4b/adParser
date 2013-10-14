@@ -32,7 +32,7 @@ public class ParserTest {
     public static void tearDownClass() {
     }
 
-//    @Test
+    @Test
     public void testGetPage() {
         System.out.println("getPage");
         Parser instance = new Parser();
@@ -45,7 +45,7 @@ public class ParserTest {
     /**
      * Test of parse method, of class Parser.
      */
-//    @Test
+    @Test
     public void testParse() {
         System.out.println("parse");
         String url = "http://www.oferty.net/mieszkania/szukaj?ps%5Blocation%5D%5Btype%5D=1&ps%5Btype%5D=1&ps%5Btransaction%5D=1&ps%5Blocation%5D%5Btext%5D=Warszawa&ps%5Bliving_"
@@ -55,7 +55,7 @@ public class ParserTest {
         instance.startParsing(url, tag, 5);
     }
     
-//    @Test
+    @Test
     public void testParseCreatingObjects() {
         System.out.println("testParseCreatingObjects");
         String url = "http://www.oferty.net/mieszkania/szukaj?ps%5Blocation%5D%5Btype%5D=1&ps%5Btype%5D=1&ps%5Btransaction%5D=1&ps%5Blocation%5D%5Btext%5D=Warszawa&ps%5Bliving_"
