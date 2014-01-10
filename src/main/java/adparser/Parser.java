@@ -185,7 +185,7 @@ public class Parser {
                 rooms.trim();
                 int b = -1;
                 b = Integer.parseInt(rooms);
-                a.setBedroomsNo(b);
+                a.setNumBedrooms(b);
                 
                 //get area
                 String area = child.getElementsByClass("cell_area").first().text();

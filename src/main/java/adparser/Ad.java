@@ -61,15 +61,15 @@ public class Ad {
     /**
      * Number of bedrooms
      */
-    private int bedroomsNo;
+    private int numBedrooms;
     
     /**
      * Number of bathrooms
      */
-    private int bathroomsNo;
+    private int numBathrooms;
     
     /**
-     * Number of floor in the building
+     * Floor number
      */
     private int floor;
     
@@ -91,7 +91,7 @@ public class Ad {
     /**
      * Number of floors in the building
      */
-    private int floorsInBuilding;
+    private int numFloors;
     
     /**
      * Direct link to this advertisement
@@ -194,20 +194,20 @@ public class Ad {
         this.pricePerMeter = pricePerMeter;
     }
 
-    public int getBedroomsNo() {
-        return bedroomsNo;
+    public int getNumBedrooms() {
+        return numBedrooms;
     }
 
-    public void setBedroomsNo(int bedroomsNo) {
-        this.bedroomsNo = bedroomsNo;
+    public void setNumBedrooms(int numBedrooms) {
+        this.numBedrooms = numBedrooms;
     }
 
-    public int getBathroomsNo() {
-        return bathroomsNo;
+    public int getNumBathrooms() {
+        return numBathrooms;
     }
 
-    public void setBathroomsNo(int bathroomsNo) {
-        this.bathroomsNo = bathroomsNo;
+    public void setNumBathrooms(int numBathrooms) {
+        this.numBathrooms = numBathrooms;
     }
 
     public int getFloor() {
@@ -242,12 +242,12 @@ public class Ad {
         this.constructionYear = constructionYear;
     }
 
-    public int getFloorsInBuilding() {
-        return floorsInBuilding;
+    public int getNumFloors() {
+        return numFloors;
     }
 
-    public void setFloorsInBuilding(int floorsInBuilding) {
-        this.floorsInBuilding = floorsInBuilding;
+    public void setNumFloors(int numFloors) {
+        this.numFloors = numFloors;
     }
 
     public String getLink() {
@@ -314,10 +314,10 @@ public class Ad {
                 + "city : " + city + Constants.NEWLINE
                 + "district : " + district + Constants.NEWLINE
                 + "street : " + street + Constants.NEWLINE
-                + "rooms : " + bedroomsNo + Constants.NEWLINE
-                + "bathrooms : " + bathroomsNo + Constants.NEWLINE
+                + "rooms : " + numBedrooms + Constants.NEWLINE
+                + "bathrooms : " + numBathrooms + Constants.NEWLINE
                 + "floor : " + floor + Constants.NEWLINE
-                + "floors in building : " + floorsInBuilding + Constants.NEWLINE
+                + "floors in building : " + numFloors + Constants.NEWLINE
                 + "construction year : " + constructionYear + Constants.NEWLINE
                 + "description : " + description + Constants.NEWLINE
                 + "link : " + link + Constants.NEWLINE;
